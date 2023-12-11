@@ -4,8 +4,8 @@
 #SBATCH -n 1
 #SBATCH --time=24:00:00
 #SBATCH --mem=16GB
-#SBATCH -o /home/tki_stephenp/TKI/create_variant_sets/logs/%x_%j.out
-#SBATCH -e /home/tki_stephenp/TKI/create_variant_sets/logs/%x_%j.err
+#SBATCH -o /data/tki_bodl/pederson/create_variant_sets/logs/%x_%j.out
+#SBATCH -e /data/tki_bodl/pederson/create_variant_sets/logs/%x_%j.err
 
 ## This script follows this basic outline
 ##
@@ -23,6 +23,8 @@
 ## 4. Compress the VCF
 ## 5. Index the VCF
 
+module add micromamba
+eval "$(micromamba shell hook --shell=bash)"
 micromamba activate bcftools
 
 WD="/data/tki_bodl/pederson/create_variant_sets"
@@ -50,15 +52,17 @@ echo -e "done"
 ## variants
 for ((i=1; i<=22; i++))
 do
-	echo -ne "$(date)\tFiltering variants from chr${i}..."
-  zcat "${VCFPRE}.chr${i}.${VCFPOST}.${SUF}" |\
-	  bcftools view \
-      -G \ 
-      -H \
-      -i '(INFO/AC_EUR_unrel + INFO/AC_EAS_unrel + INFO/AC_AMR_unrel + INFO/AC_SAS_unrel + AC_AFR_unrel) > 0.5*(INFO/AN_EUR_unrel + INFO/AN_EAS_unrel + INFO/AN_AMR_unrel + INFO/AN_SAS_unrel + AN_AFR_unrel)' |\
-	 awk 'length($4) <= 50 && length($5) <= 50' |\
-	 egrep -v 'HGSV' >> ${OUTFILE}
-   echo -e "done"
+  CURFILE="${VCFPRE}.chr${i}.${VCFPOST}.${SUF}"
+	echo -ne "$(date)\tFiltering variants from ${CURFILE}..."
+  if ! [ -f "${CURFILE}" ]; then
+    echo "Cannot find ${CURFILE}. Exiting now"
+    exit 1
+  fi
+  zcat ${CURFILE} |\
+	  bcftools view -G -H -i '(INFO/AC_EUR_unrel + INFO/AC_EAS_unrel + INFO/AC_AMR_unrel + INFO/AC_SAS_unrel + AC_AFR_unrel) > 0.5*(INFO/AN_EUR_unrel + INFO/AN_EAS_unrel + INFO/AN_AMR_unrel + INFO/AN_SAS_unrel + AN_AFR_unrel)' |\
+	  awk 'length($4) <= 50 && length($5) <= 50' |\
+	  egrep -v 'HGSV' >> ${OUTFILE}
+    echo -e "done"
 done
 
 ## Adding chrX will require removing the Hemi fields first, then operating the same way
@@ -69,10 +73,7 @@ EXCL='INFO/AC_Hemi_EAS,INFO/AC_Hemi_AMR,INFO/AC_Hemi_EUR,INFO/AC_Hemi_AFR,INFO/A
 ## In the PAR regions, the allele counts will be the same (2504)
 echo -ne "$(date)\tFiltering variants from chrX..."
 bcftools annotate -x ${EXCL} "${VCFPRE}.chrX.${VCFPOST}.v2.${SUF}" |\
-  bcftools view \
-    -G \
-    -H \
-    -i '(INFO/AC_EUR_unrel + INFO/AC_EAS_unrel + INFO/AC_AMR_unrel + INFO/AC_SAS_unrel + AC_AFR_unrel) > 0.5*(INFO/AN_EUR_unrel + INFO/AN_EAS_unrel + INFO/AN_AMR_unrel + INFO/AN_SAS_unrel + AN_AFR_unrel)' |\
+  bcftools view -G -H -i '(INFO/AC_EUR_unrel + INFO/AC_EAS_unrel + INFO/AC_AMR_unrel + INFO/AC_SAS_unrel + AC_AFR_unrel) > 0.5*(INFO/AN_EUR_unrel + INFO/AN_EAS_unrel + INFO/AN_AMR_unrel + INFO/AN_SAS_unrel + AN_AFR_unrel)' |\
   awk 'length($4) <= 50 && length($5) <= 50' |\
   egrep -v 'HGSV' >> ${OUTFILE}
   echo -e "done"
