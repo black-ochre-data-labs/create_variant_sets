@@ -31,3 +31,11 @@ micromamba env create -n bcftools -c bioconda bcftools
 ```
 
 `bgzip` is a dependency of `bcftools` and will also be installed during this setup step, as will `tabix`.
+
+After running all scripts the file info was collected manually using.
+
+```bash
+cd vcf
+echo -e "Filename\tNbr Variants\tFile Size \tmd5sum" > fileinfo.txt
+find 1000GP*gz -type f -exec bash -c 'md=$(md5sum "$0"); siz=$(wc -c <"$0"); ln=$(zcat <"$0" | egrep -vc "^#"); echo ${md} ${ln} $((${siz}/1048576))MB' {} \; | awk -v OFS='\t' '{print $2,$3,$4,$1}' >> fileinfo.txt
+```

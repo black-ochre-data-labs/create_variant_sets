@@ -1,0 +1,5 @@
+Filename	Nbr Variants	File Size 	md5sum
+1000GP_SNV_INDEL_AFR_all_0.5.vcf.gz	2284913	422MB	2c05f22d904c11d7ef1dbadca7cdbd6d
+1000GP_SNV_INDEL_AFR_unrel_0.5.vcf.gz	2281833	422MB	16c33ea8d9afb971d7bbc3d5fa2e2929
+1000GP_SNV_INDEL_panhuman_all_0.5.vcf.gz	2159471	403MB	066ad36e13a55e852e6bb60f83ef2d85
+1000GP_SNV_INDEL_panhuman_unrel_0.5.vcf.gz	2163590	404MB	97694886d920e53b3d97f3d9d99fe0bf
