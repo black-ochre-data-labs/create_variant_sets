@@ -1,4 +1,4 @@
-# Create Sets of Variants from 1000 Genomes Porject Data
+# Create Sets of Variants from 1000 Genomes Project Data
 
 This documents the workflow used for creating the variant sets for populations within the 1000 Genomes datasets.
 All files have been sourced from `https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000G_2504_high_coverage/working/20220422_3202_phased_SNV_INDEL_SV` with the [README](https://ftp.1000genomes.ebi.ac.uk/vol1/ftp/data_collections/1000G_2504_high_coverage/working/20220422_3202_phased_SNV_INDEL_SV/README_1kGP_phased_panel_110722.pdf) in that folder containing a description of how files were created.
@@ -37,7 +37,7 @@ After running all scripts the file info was collected manually using.
 ```bash
 cd vcf
 echo -e "Filename\tNbr Variants\tFile Size \tmd5sum" > fileinfo.txt
-find 1000GP*gz \
+find *vcf.gz \
 	-type f \
 	-exec bash \
 	-c 'md=$(md5sum "$0"); siz=$(wc -c <"$0"); ln=$(zcat <"$0" | egrep -vc "^#"); echo ${md} ${ln} $((${siz}/1048576))MB' {} \; |\

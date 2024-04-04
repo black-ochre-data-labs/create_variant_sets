@@ -1,5 +1,6 @@
 Filename	Nbr Variants	File Size 	md5sum
-1000GP_SNV_INDEL_AFR_all_0.5.vcf.gz	2284913	422MB	2c05f22d904c11d7ef1dbadca7cdbd6d
 1000GP_SNV_INDEL_AFR_unrel_0.5.vcf.gz	2281833	422MB	16c33ea8d9afb971d7bbc3d5fa2e2929
-1000GP_SNV_INDEL_panhuman_all_0.5.vcf.gz	2159471	403MB	066ad36e13a55e852e6bb60f83ef2d85
 1000GP_SNV_INDEL_panhuman_unrel_0.5.vcf.gz	2163590	404MB	97694886d920e53b3d97f3d9d99fe0bf
+prophecy_unrelated_PASS_MAF0.5_sites-only.chrX-chrY.vcf.gz	82283	4MB	93d13ca3d4e0897ba8fb1bd518af5699
+prophecy_unrelated_PASS_MAF0.5_sites-only_merged.vcf.gz	2290366	116MB	eab721a7a62f47a59010322ec66e8a40
+prophecy_unrelated_PASS_MAF0.5_sites-only.vcf.gz	2208083	111MB	f92c2056f8ff5ff453ca0b268f575f02
